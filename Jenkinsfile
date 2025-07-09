@@ -1,43 +1,47 @@
 pipeline {
-  agent any
+    agent any
 
-  tools {
-    maven 'Maven 3.9'
-    jdk 'JDK 11'
-  }
-
-  stages {
-    stage('Checkout') {
-      steps {
-        git 'https://github.com/htphong23/foodiehub.git'
-      }
+    tools {
+        maven 'Maven 3.9.6' // hoặc tên bạn đã cấu hình trong Jenkins (Manage Jenkins → Global Tool Configuration)
+        jdk 'jdk11'         // hoặc phiên bản JDK đã cài trong Jenkins
     }
 
-    stage('Build') {
-      steps {
-        sh 'mvn clean install -DskipTests'
-      }
+    stages {
+        stage('Checkout') {
+            steps {
+                echo '📥 Cloning source code...'
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo '🔨 Building the project...'
+                sh 'mvn clean install'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo '🧪 Running unit tests...'
+                sh 'mvn test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                echo '📦 Packaging application...'
+                sh 'mvn package'
+            }
+        }
     }
 
-    stage('Test') {
-      steps {
-        sh 'mvn test'
-      }
+    post {
+        success {
+            echo '✅ Build SUCCESSFUL!'
+        }
+        failure {
+            echo '❌ Build FAILED!'
+        }
     }
-
-    stage('Package') {
-      steps {
-        archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-      }
-    }
-  }
-
-  post {
-    success {
-      echo '✅ Build thành công!'
-    }
-    failure {
-      echo '❌ Build thất bại!'
-    }
-  }
 }
