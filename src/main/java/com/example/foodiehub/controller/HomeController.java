@@ -11,9 +11,8 @@ public class HomeController {
         return "✅ Spring Boot is working!";
     }
 
-    @GetMapping("/hello")
+    @GetMapping("/home")
     public String hello() {
         return "👋 Hello from Spring Boot!";
     }
 }
-
