@@ -8,7 +8,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "✅ Spring Boot is workingg!";
+        return "✅ Spring Boot is !";
     }
 
     @GetMapping("/home")
